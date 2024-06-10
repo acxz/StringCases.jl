@@ -63,11 +63,3 @@ PRs to add to this list.
 
 Another Julia string case library:
 - [djsegal/StringCases.jl](https://github.com/djsegal/StringCases.jl)
-
-The following are github topics under which such projects can be found:
-- [#case-conversion](https://github.com/topics/case-conversion)
-- [#case-converter](https://github.com/topics/case-converter)
-- [#case-change](https://github.com/topics/case-change)
-- [#convert-case](https://github.com/topics/convert-case)
-- [#string-case](https://github.com/topics/string-case)
-- [#string-casing](https://github.com/topics/string-casing)
