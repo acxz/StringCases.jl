@@ -8,15 +8,35 @@ that allows users to
 - **validate** strings on string cases
 - **convert** between string cases
 
-Comes with various common prebuilt string cases. See: TODO
+Comes with various common prebuilt string cases. See
+[end of `src/stringcases.jl` file](https://github.com/acxz/StringCases.jl/blob/4a1e508ef24033e87ec301f7438e05eddc7eab63/src/stringcases.jl#L336)
 
-## Installation
-TODO
+## Add Package
+In Julia REPL:
+```julia-repl
+julia> ]add https://github.com/acxz/StringCases.jl
+```
+[Info](https://pkgdocs.julialang.org/v1/managing-packages/#Adding-unregistered-packages)
 
-## Usage
-TODO: with using/import
-TODO: define, validate, define another one, convert between
-See `test/runtests.jl` temporarily
+## Remove Package
+In Julia REPL:
+```julia-repl
+julia> ]rm StringCases
+```
+[Info](https://pkgdocs.julialang.org/v1/managing-packages/#Removing-packages)
+
+## Example Usage
+```julia
+julia> using StringCases
+
+julia> camel_case_acro = PatternStringCase("camelCaseACRO", lowercase, uppercase, lowercase, StringCases.acro_all_of_token, false);
+
+julia> StringCases.convert("stringCasesFTW!", camel_case_acro, StringCases.PASCAL_CASE)
+"StringCasesFtw!"
+```
+For more examples see
+[`test/runtests.jl`](https://github.com/acxz/StringCases.jl/blob/main/test/runtests.jl)
+file.
 
 ## Why you should use this library
 While there are a myriad of string case libraries, few string case libraries
@@ -38,7 +58,7 @@ uses a self expressive pattern to define a string case.
 is a library that represents a string case as a type. This means that there is
 an API that does not involve the user defining input functions.
 
-In this library, a string case is represnted as a type, not unlike the approach
+In this library, a string case is represented as a type, not unlike the approach
 taken in [kasechange](https://github.com/pearxteam/kasechange). However, this
 library is more easy to read and succinct. It is also more generic, using a
 union type to allow upper/lower/title/any cases and being
