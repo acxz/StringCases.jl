@@ -246,7 +246,7 @@ struct PatternStringCase{
 end
 
 function split(s::AbstractString, dsc::DelimiterStringCase)
-    return Base.split(s, dsc.dlm)
+    return Base.split(s, dsc.dlm, keepempty=false)
 end
 
 # when string case is split on patterns
