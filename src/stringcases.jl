@@ -361,6 +361,6 @@ const CAMEL_CASE_ACRO_NUM = PatternStringCase(
     lowercase,
     uppercase,
     lowercase,
-    acro_none_of_token,
+    acro_all_of_token,
     true,
 )
