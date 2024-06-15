@@ -73,6 +73,16 @@ struct PatternStringCase{
         tokencase::TC,
         tokencasefirst::TCF,
         strcasefirst::SCF,
+        pat::Regex
+    ) where {TC,TCF,SCF}
+        return new{TC,TCF,SCF}(name, tokencase, tokencasefirst, strcasefirst, pat)
+    end
+
+    function PatternStringCase(
+        name::String,
+        tokencase::TC,
+        tokencasefirst::TCF,
+        strcasefirst::SCF,
         acronymintoken::AcronymInToken = acro_none_of_token,
         splitonnumber::Bool = false,
     ) where {TC,TCF,SCF}
