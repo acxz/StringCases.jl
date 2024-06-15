@@ -8,8 +8,9 @@ that allows users to
 - **validate** strings on string cases
 - **convert** between string cases
 
-Comes with various common prebuilt string cases. See
-[end of `src/stringcases.jl` file](https://github.com/acxz/StringCases.jl/blob/4a1e508ef24033e87ec301f7438e05eddc7eab63/src/stringcases.jl#L336)
+Comes with various common prebuilt string cases. See the
+[`src/commonstringcases.jl`](https://github.com/acxz/StringCases.jl/blob/main/src/stringcases.jl)
+file.
 
 ## Add Package
 In Julia REPL:
@@ -72,7 +73,7 @@ camel_case_acro = PatternStringCase(
 # Convert a string from our newly defined string case, camel_case_acro, to a
 # common string case already defined in StringCases.jl (StringCases.PASCAL_CASE)
 # For more string cases provided out of the box, take a look at the end of the
-# `src/stringcases.jl` file
+# `src/commonstringcases.jl` file
 
 StringCases.convert("stringCasesFTW!", camel_case_acro, StringCases.PASCAL_CASE)
 # Output: "StringCasesFtw!"
@@ -155,7 +156,7 @@ StringCases.convert("string.Cases-_FTW!", camel_case_punc, StringCases.SNAKE_CAS
 # Output: "string_cases_ftw"
 ```
 
-For more examples see
+For more examples see the
 [`test/runtests.jl`](https://github.com/acxz/StringCases.jl/blob/main/test/runtests.jl)
 file.
 
