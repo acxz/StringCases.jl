@@ -75,12 +75,11 @@ camel_case_acro = PatternStringCase(
 # `src/stringcases.jl` file
 
 StringCases.convert("stringCasesFTW!", camel_case_acro, StringCases.PASCAL_CASE)
-
 # Output: "StringCasesFtw!"
 
 # Now let's define a delimiter string case with hyphens, -, while preserving the
 # original casing of the string via StringCases.anycase
-# this is useful if we want to keep the acronym around
+# this is useful for keeping the acronym around
 camel_train_any_case = DelimiterStringCase(
     "camel-Train-ANY-Case",
     anycase,
@@ -90,8 +89,52 @@ camel_train_any_case = DelimiterStringCase(
 );
 
 StringCases.convert("stringCasesFTW!", camel_case_acro, camel_train_any_case)
-
 # Output: "string-Cases-FTW!"
+
+# Let's say you have your own regex to pattern match tokens with
+# Source: https://stackoverflow.com/a/70164741
+wordpat = r"
+^[a-z]+ |                  #match initial lower case part
+[A-Z][a-z]+ |              #match Words Like This
+\d*([A-Z](?=[A-Z]|$))+ |   #match ABBREV 30MW
+\d+                        #match 1234 (numbers without units)
+"x;
+
+# You can use it like so:
+my_pattern_case = PatternStringCase(
+    "myCamelCaseACRO123",
+    lowercase,
+    uppercase,
+    lowercase,
+    wordpat
+);
+
+StringCases.convert("askBest30MWPrice", my_pattern_case, StringCases.SNAKE_CASE)
+# Output: "ask_best_30mw_price"
+
+# However, this pattern can already be specified by this library
+# so you don't have to create your own regex
+camel_case_acro_num = PatternStringCase(
+    "camelCaseACRO123",
+    lowercase,
+    uppercase,
+    lowercase,
+    StringCases.acro_all_of_token,
+    true,
+);
+
+StringCases.convert("askBest30MWPrice", camel_case_acro_num, StringCases.SNAKE_CASE)
+# Output: "ask_best_30mw_price"
+
+# Morever, it can handle unicode instead of just the latin letters like the
+# custom regex
+StringCases.convert("askBest30MWΠrice", my_pattern_case, StringCases.SNAKE_CASE)
+# Output: "ask_best_30mw"
+
+# Notice that the uppercase Greek letter Π denotes the start of a new token
+# and is also lowercased as required by the snake case convention
+StringCases.convert("askBest30MWΠrice", camel_case_acro_num, StringCases.SNAKE_CASE)
+# Output: ask_best_30mw_πrice"
 ```
 
 For more examples see
