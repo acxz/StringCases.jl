@@ -1,11 +1,3 @@
-# to deal with starting characters that aren't
-# upper/lower/title, i.e. other letter in some languages
-# a delimiter string case must be used
-# as we can't determine if the grapheme is start of new token
-# or part of the previous one with a upper/lower/title case based string case
-
-UpperLowerTitleCase = Union{typeof(uppercase),typeof(lowercase),typeof(titlecase)}
-
 # enum to handle options of how an acronym is used in a token
 @enum AcronymInToken begin
     acro_all_of_token
@@ -19,6 +11,7 @@ function anycase end
 anycase(c::AbstractChar) = c
 anycase(s::AbstractString) = s
 
+UpperLowerTitleCase = Union{typeof(uppercase),typeof(lowercase),typeof(titlecase)}
 UpperLowerTitleAnyCase = Union{UpperLowerTitleCase,typeof(anycase)}
 
 # case first char of input
@@ -249,25 +242,8 @@ function split(s::AbstractString, dsc::DelimiterStringCase)
     return Base.split(s, dsc.dlm, keepempty=false)
 end
 
-# when string case is split on patterns
-# have built in options to add number/acronym/&numberacronym case
 function split(s::AbstractString, psc::PatternStringCase)
     return [m.match for m in eachmatch(psc.pat, s)]
-
-    # Split by token's first character case
-    #tokens = Vector{SubString{typeof(s)}}()
-    #prev_token_last_idx = prevind(s, firstindex(s))
-    #for idx in eachindex(s[begin:prevind(s, lastindex(s))])
-    #    # Test if letter case matches specified letter case for a new token
-    #    if s[nextind(s, idx)] == sc.tokencasefirst(s[nextind(s, idx)])
-    #        token = s[nextind(s, prev_token_last_idx):thisind(s, idx)]
-    #        push!(tokens, token)
-    #        prev_token_last_idx = idx
-    #    end
-    #end
-    #token = s[nextind(s, prev_token_last_idx):end]
-    #push!(tokens, token)
-    #return tokens
 end
 
 function join(tokens, dsc::DelimiterStringCase)
@@ -301,11 +277,15 @@ function convert(
     return output_str
 end
 
-# for validation need to piggyback off of the split
-# but also can add specified characters as part of the tokens
+# TODO: add isvalid, validated_tokens, and correct_tokens as output to an
+# encompassing validate function,
+# this helps redundant splits if we run validate inside convert
+# TODO: validate regex for possible characters in token
+# have a validate for delimiter and one for pattern
+# pattern is same as delimiter but it makes sure that all the letters are
+# captured in the regex
+# add example of delimiter regex on all of punctuation
 function validate(s::AbstractString, sc::AbstractStringCase)
-    # TODO validate regex for possible characters in token
-
     # Split string based on dlm or pat
     tokens = split(s, sc)
 
@@ -338,10 +318,6 @@ function validate(s::AbstractString, sc::AbstractStringCase)
 
     return is_valid_str
 end
-
-# TODO: add isvalid, validated_tokens, and correct_tokens as output to a master
-# validate function, this helps redundant splits when running validation and
-# conversion
 
 # Common string cases
 const TITLE_CASE = DelimiterStringCase("Title Case", lowercase, titlecase, titlecase, " ")
