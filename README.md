@@ -26,14 +26,74 @@ julia> ]rm StringCases
 [Info](https://pkgdocs.julialang.org/v1/managing-packages/#Removing-packages)
 
 ## Example Usage
+Feel free to copy this in your REPL or run it as a script
 ```julia
-julia> using StringCases
+using StringCases;
 
-julia> camel_case_acro = PatternStringCase("camelCaseACRO", lowercase, uppercase, lowercase, StringCases.acro_all_of_token, false);
+# Let's define a pattern string case for camel case with acronyms, camelCaseACRO
 
-julia> StringCases.convert("stringCasesFTW!", camel_case_acro, StringCases.PASCAL_CASE)
-"StringCasesFtw!"
+# specify the casing of all the letters besides the first letter of each token
+# and the first leter of the string
+tokencase = lowercase;
+
+# specify the casing of first letters of each token
+tokencasefirst = uppercase;
+
+# specify the casing of the first letter of the string
+strcasefirst = lowercase;
+
+# Options for all the cases include:
+# lowercase
+# uppercase
+# titlecase
+# StringCases.anycase
+
+# Acronym (i.e. opposite casing of the tokencase) specifier to determine if
+# acronyms exist in all/start/end of a token
+# Options include:
+# StringCases.acro_all_of_token: i.e. Speed30MPH
+# StringCases.acro_start_of_token: i.e. Speed30Mph
+# StringCases.acro_end_of_token: ie. Speed30mpH
+# StringCases.acro_none_of_token: i.e. Speed30mph
+acronymintoken = StringCases.acro_all_of_token;
+
+# Split new tokens on numbers
+splitonnumber = false;
+
+camel_case_acro = PatternStringCase(
+    "camelCaseACRO",
+    tokencase,
+    tokencasefirst,
+    strcasefirst,
+    acronymintoken,
+    splitonnumber
+);
+
+# Convert a string from our newly defined string case, camel_case_acro, to a
+# common string case already defined in StringCases.jl (StringCases.PASCAL_CASE)
+# For more string cases provided out of the box, take a look at the end of the
+# `src/stringcases.jl` file
+
+StringCases.convert("stringCasesFTW!", camel_case_acro, StringCases.PASCAL_CASE)
+
+# Output: "StringCasesFtw!"
+
+# Now let's define a delimiter string case with hyphens, -, while preserving the
+# original casing of the string via StringCases.anycase
+# this is useful if we want to keep the acronym around
+camel_train_any_case = DelimiterStringCase(
+    "camel-Train-ANY-Case",
+    anycase,
+    uppercase,
+    lowercase,
+    "-"
+);
+
+StringCases.convert("stringCasesFTW!", camel_case_acro, camel_train_any_case)
+
+# Output: "string-Cases-FTW!"
 ```
+
 For more examples see
 [`test/runtests.jl`](https://github.com/acxz/StringCases.jl/blob/main/test/runtests.jl)
 file.
