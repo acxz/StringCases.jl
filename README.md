@@ -135,6 +135,24 @@ StringCases.convert("askBest30MWΠrice", my_pattern_case, StringCases.SNAKE_CASE
 # and is also lowercased as required by the snake case convention
 StringCases.convert("askBest30MWΠrice", camel_case_acro_num, StringCases.SNAKE_CASE)
 # Output: ask_best_30mw_πrice"
+
+# You can also customize delimiters, in fact they can be any one of a string,
+# regular expression, function, single character or collection of characters.
+
+# Let's create a regex delimiter to split on one or more (+) characters in the
+# Unicode punctuation category (\p{P})
+dlm = r"\p{P}+"
+
+camel_case_punc = DelimiterStringCase(
+    "camel.Case-_Punctuation!",
+    lowercase,
+    uppercase,
+    lowercase,
+    dlm
+);
+
+StringCases.convert("string.Cases-_FTW!", camel_case_punc, StringCases.SNAKE_CASE)
+# Output: "string_cases_ftw"
 ```
 
 For more examples see
