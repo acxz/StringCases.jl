@@ -182,7 +182,7 @@ struct PatternStringCase{
             # Four cases regarding acronyms (special casing of tokens)
             # followup lowercase letters (e.g. 23MHz vs 23M, Hz)
             # the regular acronym case would be: MW Hz Hello vs MWHz Hello
-            # basically you have have an acronym (only uppercase) or have
+            # basically you have an acronym (only uppercase) or have
             # the token start with an acronym and follow up with
             # lower/tokencase
             # the other case is when the acronym is at the end, i.e. HzhHEL
