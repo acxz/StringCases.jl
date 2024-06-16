@@ -1,11 +1,3 @@
-# enum to handle options of how an acronym is used in a token
-@enum AcronymInToken begin
-    acro_all_of_token
-    acro_start_of_token
-    acro_end_of_token
-    acro_none_of_token
-end
-
 # passthrough function for keeping input casing on input
 function anycase end
 anycase(c::AbstractChar) = c
@@ -14,9 +6,12 @@ anycase(s::AbstractString) = s
 UpperLowerTitleCase = Union{typeof(uppercase),typeof(lowercase),typeof(titlecase)}
 UpperLowerTitleAnyCase = Union{UpperLowerTitleCase,typeof(anycase)}
 
-# case first char of input
-function _casefirst(token::AbstractString, case::UpperLowerTitleAnyCase)
-    return case(first(token)) * SubString(token, nextind(token, firstindex(token)))
+# enum to handle options of how an acronym is used in a token
+@enum AcronymInToken begin
+    acro_all_of_token
+    acro_start_of_token
+    acro_end_of_token
+    acro_none_of_token
 end
 
 # regex string (rs"") to define a regex but not to compile a regex (r"")
@@ -235,8 +230,29 @@ struct PatternStringCase{
     end
 end
 
+# Case tokens based on string case
+function _case!(tokens, sc::AbstractStringCase)
+    # Case all token letters
+    tokens[begin:end] = sc.tokencase.(tokens)
+
+    # Case first letter of all but first token
+    tokens[(begin + 1):end] = _casefirst.(tokens[(begin + 1):end], sc.tokencasefirst)
+
+    # Case first letter of first token
+    tokens[begin] = _casefirst(first(tokens), sc.strcasefirst)
+end
+
+# Case first char of token if not empty, otherwise passthrough
+function _casefirst(token::AbstractString, case::UpperLowerTitleAnyCase)
+    if isempty("")
+        token
+    else
+        case(first(token)) * SubString(token, nextind(token, firstindex(token)))
+    end
+end
+
 function split(s::AbstractString, dsc::DelimiterStringCase)
-    return Base.split(s, dsc.dlm, keepempty = false)
+    return Base.split(s, dsc.dlm)
 end
 
 function split(s::AbstractString, psc::PatternStringCase)
@@ -244,10 +260,12 @@ function split(s::AbstractString, psc::PatternStringCase)
 end
 
 function join(tokens, dsc::DelimiterStringCase)
+    _case!(tokens, dsc)
     return Base.join(tokens, dsc.dlm)
 end
 
 function join(tokens, psc::PatternStringCase)
+    _case!(tokens, psc)
     return Base.join(tokens)
 end
 
@@ -259,19 +277,8 @@ function convert(
     # Split string based on delimiter or pattern
     tokens = split(s, input_sc)
 
-    # Case all token letters
-    tokens[begin:end] = output_sc.tokencase.(tokens)
-
-    # Case first letter of all but first token
-    tokens[(begin + 1):end] = _casefirst.(tokens[(begin + 1):end], output_sc.tokencasefirst)
-
-    # Case first letter of first token
-    tokens[begin] = _casefirst(first(tokens), output_sc.strcasefirst)
-
     # Join tokens based on delimiter or pattern
-    output_str = join(tokens, output_sc)
-
-    return output_str
+    return join(tokens, output_sc)
 end
 
 # TODO: add isvalid, validated_tokens, and correct_tokens as output to an

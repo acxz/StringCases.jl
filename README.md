@@ -27,9 +27,9 @@ julia> ]rm StringCases
 [Info](https://pkgdocs.julialang.org/v1/managing-packages/#Removing-packages)
 
 ## Example Usage
-Feel free to copy this in your REPL or run it as a script
+Feel free to copy this in your REPL
 ```julia
-using StringCases;
+using StringCases
 
 # Let's define a pattern string case for camel case with acronyms, camelCaseACRO
 
@@ -136,6 +136,41 @@ StringCases.convert("askBest30MWΠrice", my_pattern_case, StringCases.SNAKE_CASE
 # and is also lowercased as required by the snake case convention
 StringCases.convert("askBest30MWΠrice", camel_case_acro_num, StringCases.SNAKE_CASE)
 # Output: ask_best_30mw_πrice"
+
+# Say you don't know the string case of an input string, but you can extract the
+# tokens of the input string, e.g. using Base.split or Base.eachmatch
+# In such a situation you can use the StringCases.join function to join a
+# sequence of tokens that conforms to the specified string case
+
+# Let's create a regex delimiter to split on one or more (+) characters in the
+# Unicode punctuation category (\p{P})
+dlm = r"\p{P}+";
+
+tokens = split("string.Cases-_FTW!", dlm)
+# Output:
+# 4-element Vector{SubString{String}}:
+#  "string"
+#  "Cases"
+#  "FTW"
+#  ""
+
+StringCases.join(tokens, StringCases.SNAKE_CASE)
+# Output: "string_cases_ftw"
+
+# If you don't want to convert a string, but just want to extract the tokens
+# from a given string, based on an already defined StringCase, feel free to use
+# the StringCases.split function. This can be useful if you don't want to
+# write your own regex, such as camel case with acronyms and splitting on
+# numbers in our example above.
+
+StringCases.split("askBest30MWPrice", camel_case_acro_num)
+# Output:
+# 4-element Vector{SubString{String}}:
+#  "ask"
+#  "Best"
+#  "30MW"
+#  "Price"
+
 ```
 
 For more examples see the
