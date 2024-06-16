@@ -67,7 +67,7 @@ camel_case_acro = PatternStringCase(
     tokencasefirst,
     strcasefirst,
     acronymintoken,
-    splitonnumber
+    splitonnumber,
 );
 
 # Convert a string from our newly defined string case, camel_case_acro, to a
@@ -81,13 +81,8 @@ StringCases.convert("stringCasesFTW!", camel_case_acro, StringCases.PASCAL_CASE)
 # Now let's define a delimiter string case with hyphens, -, while preserving the
 # original casing of the string via StringCases.anycase
 # this is useful for keeping the acronym around
-camel_train_any_case = DelimiterStringCase(
-    "camel-Train-ANY-Case",
-    anycase,
-    uppercase,
-    lowercase,
-    "-"
-);
+camel_train_any_case =
+    DelimiterStringCase("camel-Train-ANY-Case", anycase, uppercase, lowercase, "-");
 
 StringCases.convert("stringCasesFTW!", camel_case_acro, camel_train_any_case)
 # Output: "string-Cases-FTW!"
@@ -102,13 +97,8 @@ wordpat = r"
 "x;
 
 # You can use it like so:
-my_pattern_case = PatternStringCase(
-    "myCamelCaseACRO123",
-    lowercase,
-    uppercase,
-    lowercase,
-    wordpat
-);
+my_pattern_case =
+    PatternStringCase("myCamelCaseACRO123", lowercase, uppercase, lowercase, wordpat);
 
 StringCases.convert("askBest30MWPrice", my_pattern_case, StringCases.SNAKE_CASE)
 # Output: "ask_best_30mw_price"
@@ -170,6 +160,18 @@ StringCases.split("askBest30MWPrice", camel_case_acro_num)
 #  "Best"
 #  "30MW"
 #  "Price"
+
+# Validating a string to a StringCase is done with StringCases.isvalid
+StringCases.isvalid("String.Cases-_FTW!", StringCases.KEBAB_CASE)
+# Output: false
+
+# After converting the string to kebab case
+StringCases.convert("String.Cases-_FTW!", StringCases.TRAIN_CASE, StringCases.KEBAB_CASE)
+# Output: string.cases-_ftw!"
+
+# We now have a valid kebab case string
+StringCases.isvalid("string.cases-_ftw!", StringCases.KEBAB_CASE)
+# Output: true
 
 ```
 

@@ -281,40 +281,7 @@ function convert(
     return join(tokens, output_sc)
 end
 
-# TODO: add isvalid, validated_tokens, and correct_tokens as output to an
-# encompassing validate function,
-# this helps redundant splits if we run validate inside convert
-function validate(s::AbstractString, sc::AbstractStringCase)
-    # Split string based string case
-    tokens = split(s, sc)
-
-    # Validate split tokens with respect to the original string
-    is_valid_str = s == join(tokens, sc)
-
-    # Check case for all but first token
-    correct_tokens = Vector{SubString{typeof(s)}}()
-    for token in tokens[(begin + 1):end]
-        correct_token_wip = sc.tokencase(token)
-        correct_token = _casefirst(correct_token_wip, sc.strcasefirst)
-
-        if token != correct_token
-            is_valid_str = false
-        end
-
-        push!(correct_tokens, correct_token)
-    end
-
-    # Check case for first token
-    correct_first_token_wip = sc.tokencase(first(tokens))
-    correct_first_token = _casefirst(correct_first_token_wip, sc.strcasefirst)
-
-    if first(tokens) != correct_first_token
-        is_valid_str = false
-    end
-
-    pushfirst!(correct_tokens, correct_first_token)
-
-    correct_str = join(correct_tokens, sc)
-
-    return is_valid_str
+function isvalid(s::AbstractString, sc::AbstractStringCase)
+    # Validate converted string to the original string
+    return s == convert(s, sc, sc)
 end
