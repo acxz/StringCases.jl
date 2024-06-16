@@ -136,13 +136,12 @@ StringCases.convert("askBest30MWΠrice", camel_case_acro_num, StringCases.SNAKE_
 # Unicode punctuation category (\p{P})
 dlm = r"\p{P}+";
 
-tokens = split("string.Cases-_FTW!", dlm)
+tokens = split("string.Cases-_FTW!", dlm, keepempty = false)
 # Output:
-# 4-element Vector{SubString{String}}:
+# 3-element Vector{SubString{String}}:
 #  "string"
 #  "Cases"
 #  "FTW"
-#  ""
 
 StringCases.join(tokens, StringCases.SNAKE_CASE)
 # Output: "string_cases_ftw"

@@ -252,7 +252,7 @@ function _casefirst(token::AbstractString, case::UpperLowerTitleAnyCase)
 end
 
 function split(s::AbstractString, dsc::DelimiterStringCase)
-    return Base.split(s, dsc.dlm)
+    return Base.split(s, dsc.dlm, keepempty = false)
 end
 
 function split(s::AbstractString, psc::PatternStringCase)
