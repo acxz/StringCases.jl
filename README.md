@@ -72,7 +72,7 @@ camel_case_acro = PatternStringCase(
 
 # Convert a string from our newly defined string case, camel_case_acro, to a
 # common string case already defined in StringCases.jl (StringCases.PASCAL_CASE)
-# For more string cases provided out of the box, take a look at the end of the
+# For more string cases provided out of the box, take a look at the
 # `src/commonstringcases.jl` file
 
 StringCases.convert("stringCasesFTW!", camel_case_acro, StringCases.PASCAL_CASE)
@@ -136,24 +136,6 @@ StringCases.convert("askBest30MWΠrice", my_pattern_case, StringCases.SNAKE_CASE
 # and is also lowercased as required by the snake case convention
 StringCases.convert("askBest30MWΠrice", camel_case_acro_num, StringCases.SNAKE_CASE)
 # Output: ask_best_30mw_πrice"
-
-# You can also customize delimiters, in fact they can be any one of a string,
-# regular expression, function, single character or collection of characters.
-
-# Let's create a regex delimiter to split on one or more (+) characters in the
-# Unicode punctuation category (\p{P})
-dlm = r"\p{P}+"
-
-camel_case_punc = DelimiterStringCase(
-    "camel.Case-_Punctuation!",
-    lowercase,
-    uppercase,
-    lowercase,
-    dlm
-);
-
-StringCases.convert("string.Cases-_FTW!", camel_case_punc, StringCases.SNAKE_CASE)
-# Output: "string_cases_ftw"
 ```
 
 For more examples see the
@@ -185,11 +167,10 @@ taken in [kasechange](https://github.com/pearxteam/kasechange). However, this
 library is more easy to read and succinct. It is also more generic, using a
 union type to allow upper/lower/title/any cases and being
 able to split tokens either on a delimiter or to match tokens based on a pattern.
-The delimiter can be [specified as a character, collection of characters, string,
-regular expression, or a function](https://docs.julialang.org/en/v1/base/strings/#Base.split)
-and a pattern can be specified with a regex. Default pattern regexes are
-provided that allow you to match based on case changes, acronyms, numbers, and
-combinations thereof.
+The delimiter can be specified as a character or a string and a pattern can be
+specified with a regex. Default pattern regexes are provided that allow you to
+match based on case changes, acronyms, numbers, and combinations thereof with
+the constructor.
 Compared to [kasechange](https://github.com/pearxteam/kasechange) which is using
 a [boolean for allowing only upper/lower cases](https://github.com/pearxteam/kasechange/blob/6c274238ddae339b7cd0d50751855b710facf223/src/commonMain/kotlin/net/pearx/kasechange/formatter/CaseFormatterConfigurable.kt#L15)
 and only allows specifing string splits via

@@ -1,19 +1,19 @@
 # Delimiter String Cases
-const TITLE_CASE = DelimiterStringCase("Title Case", lowercase, titlecase, titlecase, " ")
+const TITLE_CASE = DelimiterStringCase("Title Case", lowercase, titlecase, titlecase, ' ')
 const LENIENT_TITLE_CASE =
-    DelimiterStringCase("LEnient Title Case", anycase, titlecase, titlecase, " ")
+    DelimiterStringCase("LEnient Title Case", anycase, titlecase, titlecase, ' ')
 const SENTENCE_CASE =
-    DelimiterStringCase("Sentence case", lowercase, lowercase, uppercase, " ")
-const SNAKE_CASE = DelimiterStringCase("snake_case", lowercase, lowercase, lowercase, "_")
+    DelimiterStringCase("Sentence case", lowercase, lowercase, uppercase, ' ')
+const SNAKE_CASE = DelimiterStringCase("snake_case", lowercase, lowercase, lowercase, '_')
 const SCREAMING_SNAKE_CASE =
-    DelimiterStringCase("SCREAMING_SNAKE_CASE", uppercase, uppercase, uppercase, "_")
-const KEBAB_CASE = DelimiterStringCase("kebab-case", lowercase, lowercase, lowercase, "-")
-const COBOL_CASE = DelimiterStringCase("COBOL-CASE", uppercase, uppercase, uppercase, "-")
-const ADA_CASE = DelimiterStringCase("Ada_Case", lowercase, uppercase, uppercase, "_")
-const TRAIN_CASE = DelimiterStringCase("Train-Case", lowercase, uppercase, uppercase, "-")
-const SPACE_CASE = DelimiterStringCase("space case", anycase, anycase, anycase, " ")
-const PATH_CASE = DelimiterStringCase("path/case", anycase, anycase, anycase, "/")
-const DOT_CASE = DelimiterStringCase("dot.case", anycase, anycase, anycase, ".")
+    DelimiterStringCase("SCREAMING_SNAKE_CASE", uppercase, uppercase, uppercase, '_')
+const KEBAB_CASE = DelimiterStringCase("kebab-case", lowercase, lowercase, lowercase, '-')
+const COBOL_CASE = DelimiterStringCase("COBOL-CASE", uppercase, uppercase, uppercase, '-')
+const ADA_CASE = DelimiterStringCase("Ada_Case", lowercase, uppercase, uppercase, '_')
+const TRAIN_CASE = DelimiterStringCase("Train-Case", lowercase, uppercase, uppercase, '-')
+const SPACE_CASE = DelimiterStringCase("space case", anycase, anycase, anycase, ' ')
+const PATH_CASE = DelimiterStringCase("path/case", anycase, anycase, anycase, '/')
+const DOT_CASE = DelimiterStringCase("dot.case", anycase, anycase, anycase, '.')
 
 # Pattern String Cases
 const FLAT_CASE = PatternStringCase("flatcase", lowercase, lowercase, lowercase)

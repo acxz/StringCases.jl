@@ -41,10 +41,7 @@ struct DelimiterStringCase{
     tokencase::TC
     tokencasefirst::TCF
     strcasefirst::SCF
-
-    # delimiter to identify how to split a token
-    # See: Base.split's dlm documentation for more info
-    dlm::Any
+    dlm::Union{AbstractChar,AbstractString}
 end
 
 # String Case which determines how to split based on token patterns
@@ -66,7 +63,7 @@ struct PatternStringCase{
         tokencase::TC,
         tokencasefirst::TCF,
         strcasefirst::SCF,
-        pat::Regex
+        pat::Regex,
     ) where {TC,TCF,SCF}
         return new{TC,TCF,SCF}(name, tokencase, tokencasefirst, strcasefirst, pat)
     end
@@ -239,7 +236,7 @@ struct PatternStringCase{
 end
 
 function split(s::AbstractString, dsc::DelimiterStringCase)
-    return Base.split(s, dsc.dlm, keepempty=false)
+    return Base.split(s, dsc.dlm, keepempty = false)
 end
 
 function split(s::AbstractString, psc::PatternStringCase)
@@ -280,16 +277,12 @@ end
 # TODO: add isvalid, validated_tokens, and correct_tokens as output to an
 # encompassing validate function,
 # this helps redundant splits if we run validate inside convert
-# TODO: validate regex for possible characters in token
-# have a validate for delimiter and one for pattern
-# pattern is same as delimiter but it makes sure that all the letters are
-# captured in the regex
-# add example of delimiter regex on all of punctuation
 function validate(s::AbstractString, sc::AbstractStringCase)
-    # Split string based on dlm or pat
+    # Split string based string case
     tokens = split(s, sc)
 
-    is_valid_str = true
+    # Validate split tokens with respect to the original string
+    is_valid_str = s == join(tokens, sc)
 
     # Check case for all but first token
     correct_tokens = Vector{SubString{typeof(s)}}()
