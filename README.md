@@ -34,7 +34,7 @@ using StringCases
 # Let's define a pattern string case for camel case with acronyms, camelCaseACRO
 
 # specify the casing of all the letters besides the first letter of each token
-# and the first leter of the string
+# and the first letter of the string
 tokencase = lowercase;
 
 # specify the casing of first letters of each token
