@@ -125,7 +125,7 @@ StringCases.convert("askBest30MWΠrice", my_pattern_case, StringCases.SNAKE_CASE
 # Notice that the uppercase Greek letter Π denotes the start of a new token
 # and is also lowercased as required by the snake case convention
 StringCases.convert("askBest30MWΠrice", camel_case_acro_num, StringCases.SNAKE_CASE)
-# Output: ask_best_30mw_πrice"
+# Output: "ask_best_30mw_πrice"
 
 # Say you don't know the string case of an input string, but you can extract the
 # tokens of the input string, e.g. using Base.split or Base.eachmatch

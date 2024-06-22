@@ -3,10 +3,10 @@ using Test
 
 @testset "StringCases.jl" begin
     @testset "Validate" begin
-        @test StringCases.validate("StringCasePat", StringCases.PASCAL_CASE) == true
-        @test StringCases.validate("stringCasePat", StringCases.CAMEL_CASE) == false
-        @test StringCases.validate("String Case Dlm", StringCases.TITLE_CASE) == true
-        @test StringCases.validate("α_β_δ", StringCases.SNAKE_CASE) == true
+        @test StringCases.isvalid("StringCasePat", StringCases.PASCAL_CASE) == true
+        @test StringCases.isvalid("StringCasePat", StringCases.CAMEL_CASE) == false
+        @test StringCases.isvalid("String Case Dlm", StringCases.TITLE_CASE) == true
+        @test StringCases.isvalid("α_β_δ", StringCases.SNAKE_CASE) == true
     end
     @testset "Convert" begin
         @test StringCases.convert(

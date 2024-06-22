@@ -231,7 +231,7 @@ struct PatternStringCase{
 end
 
 # Case tokens based on string case
-function _case!(tokens, sc::AbstractStringCase)
+function case!(tokens, sc::AbstractStringCase)
     # Case all token letters
     tokens[begin:end] = sc.tokencase.(tokens)
 
@@ -244,7 +244,7 @@ end
 
 # Case first char of token if not empty, otherwise passthrough
 function _casefirst(token::AbstractString, case::UpperLowerTitleAnyCase)
-    if isempty("")
+    if isempty(token)
         token
     else
         case(first(token)) * SubString(token, nextind(token, firstindex(token)))
@@ -260,12 +260,12 @@ function split(s::AbstractString, psc::PatternStringCase)
 end
 
 function join(tokens, dsc::DelimiterStringCase)
-    _case!(tokens, dsc)
+    case!(tokens, dsc)
     return Base.join(tokens, dsc.dlm)
 end
 
 function join(tokens, psc::PatternStringCase)
-    _case!(tokens, psc)
+    case!(tokens, psc)
     return Base.join(tokens)
 end
 
@@ -277,11 +277,30 @@ function convert(
     # Split string based on delimiter or pattern
     tokens = split(s, input_sc)
 
+    ## Validate the input string on the input string case
+    #if s != join(tokens, input_sc)
+    #    throw(
+    #        DomainError(
+    #            (s, input_sc),
+    #            """
+    #            convert called with a string that disobeys input StringCase.
+    #            Either create a new StringCase that describes the input string
+    #            and call convert with the new input StringCase
+    #            or split the string into tokens yourself
+    #            and call join(tokens, output_string_case)
+    #            """,
+    #        ),
+    #    )
+    #end
+
     # Join tokens based on delimiter or pattern
     return join(tokens, output_sc)
 end
 
 function isvalid(s::AbstractString, sc::AbstractStringCase)
-    # Validate converted string to the original string
-    return s == convert(s, sc, sc)
+    # Split string based on delimiter or pattern
+    tokens = split(s, sc)
+
+    # Validate the input string on the input string case
+    return s == join(tokens, sc)
 end
